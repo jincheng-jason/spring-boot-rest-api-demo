@@ -1,39 +1,23 @@
 // App.js
 
-import React, { useMemo, useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router,Route} from 'react-router-dom';
 
-import Table from "./Table";
 import "./App.css";
-import axios from "axios";
+import Posts from "./components/posts";
+import Comments from "./components/comments";
 
 function App() {
-  // data state to store the TV Maze API data. Its initial value is an empty array
-  const [data, setData] = useState([]);
-
-  // Using useEffect to call the API once mounted and set the data
-  useEffect(() => {
-    (async () => {
-      const result = await axios("http://localhost:8080/v1.0/api/posts", {crossOrigin: true});
-      setData(result.data);
-    })();
-  }, []);
-
-  const columns = useMemo(
-      () => [
-        {
-          Header: "Title",
-          accessor: "title"
-        },
-        {
-          Header: "Body",
-          accessor: "body"
-        }
-      ]
-  );
 
   return (
       <div className="App">
-          <Table columns={columns} data={data} />
+          <Router>
+              <div>
+                  <Route path="/" component={Posts} exact />
+                  <Route path="/posts" component={Posts} />
+                  <Route path="/comments" component={Comments} />
+              </div>
+          </Router>
       </div>
   );
 }

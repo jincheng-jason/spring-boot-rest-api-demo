@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * CommentsController
+ * @author Jason Li
+ */
 @RestController
 @RequestMapping("/v1.0/api/comments")
 public class CommentsController {

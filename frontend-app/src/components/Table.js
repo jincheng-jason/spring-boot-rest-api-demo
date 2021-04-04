@@ -1,8 +1,10 @@
 // Table.js
 
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useHistory } from "react-router-dom";
 import { useTable } from "react-table";
+import BTable from 'react-bootstrap/Table';
 
 export default function Table({ columns, data }) {
     // Use the useTable Hook to send the columns and data to build the table
@@ -19,7 +21,11 @@ export default function Table({ columns, data }) {
 
     const history = useHistory();
     const handleRowClick = (row) => {
-        history.push(`/comments/${row.original.id}`);
+        if (row.original.email){
+            history.push(`/posts`);
+        } else {
+            history.push(`/comments?postId=${row.original.id}`);
+        }
     }
 
     /*
@@ -27,19 +33,13 @@ export default function Table({ columns, data }) {
       - react-table doesn't have UI, it's headless. We just need to put the react-table props from the Hooks, and it will do its magic automatically
     */
     return (
-        <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+        <BTable striped bordered hover size="sm" {...getTableProps()}>
             <thead>
             {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => (
                         <th
                             {...column.getHeaderProps()}
-                            style={{
-                                borderBottom: 'solid 3px red',
-                                background: 'aliceblue',
-                                color: 'black',
-                                fontWeight: 'bold',
-                            }}
                         >
                             {column.render('Header')}
                         </th>
@@ -56,11 +56,6 @@ export default function Table({ columns, data }) {
                             return (
                                 <td
                                     {...cell.getCellProps()}
-                                    style={{
-                                        padding: '10px',
-                                        border: 'solid 1px gray',
-                                        background: 'papayawhip',
-                                    }}
                                 >
                                     {cell.render('Cell')}
                                 </td>
@@ -70,6 +65,6 @@ export default function Table({ columns, data }) {
                 )
             })}
             </tbody>
-        </table>
+        </BTable>
     );
 }
